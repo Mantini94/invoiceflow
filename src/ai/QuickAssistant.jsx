@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const N8N_AI_WEBHOOK_URL =
-  "https://n8n-mvj1.srv1505698.hstgr.cloud/webhook-test/invoice-ai-assistant";
+  "https://n8n-mvj1.srv1505698.hstgr.cloud/webhook/invoice-ai-assistant";
 
 export default function QuickAssistant({
   invoices,
