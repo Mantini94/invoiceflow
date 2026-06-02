@@ -1,0 +1,326 @@
+wS2&b/#B7$qKN32 haslo do Supabase
+
+
+###########################################################
+# AI INVOICE SYSTEM — BACKEND / N8N / SUPABASE / AI
+###########################################################
+
+STACK:
+- n8n
+- Supabase
+- OpenAI
+- REST API
+- OCR / PDF extraction
+
+###########################################################
+# CEL SYSTEMU
+###########################################################
+
+EMAIL
+↓
+PDF
+↓
+OCR
+↓
+AI EXTRACTION
+↓
+VALIDATION
+↓
+DUPLICATE DETECTION
+↓
+DATABASE
+
+System:
+- pobiera faktury z maila
+- wrzuca PDF do storage
+- wyciąga dane AI
+- waliduje dane
+- wykrywa duplikaty
+- zapisuje rekordy do Supabase
+
+###########################################################
+# FINAL FLOW
+###########################################################
+
+Gmail Trigger
+↓
+Czy są załączniki?
+↓
+Pobierz pierwszy plik
+↓
+Czy format jest poprawny?
+↓
+Przygotuj plik do zapisu
+├── Upload do Supabase Storage
+├── Zapisz rekord invoice processing
+└── Extract PDF Text
+        ↓
+AI - Czy to faktura?
+        ↓
+AI - Extract Invoice Data
+        ↓
+Parse AI Invoice JSON
+        ↓
+Validate AI Invoice Data
+        ↓
+Build Duplicate Key
+        ↓
+Check duplicate
+        ↓
+Normalize Check Duplicate
+        ↓
+Czy duplikat?
+    ├── TRUE
+    │      ↓
+    │  Update current invoice as duplicate
+    │
+    └── FALSE
+           ↓
+      Prepare invoice update payload
+           ↓
+      Update invoice data
+
+###########################################################
+# NAJWAŻNIEJSZE LEKCJE
+###########################################################
+
+1. n8n = DATAFLOW ENGINE
+
+Każdy node:
+- dostaje INPUT
+- robi operację
+- oddaje OUTPUT
+
+OUTPUT jednego node
+=
+INPUT następnego
+
+###########################################################
+# $json
+###########################################################
+
+$current node input
+
+Przykład:
+
+{{ $json.invoice_number }}
+
+###########################################################
+# $('Node')
+###########################################################
+
+odwołanie do innego node
+
+Przykład:
+
+{{ $('Build Duplicate Key').item.json }}
+
+###########################################################
+# JSON PARSE
+###########################################################
+
+AI zwraca STRING:
+
+"{ \"invoice_number\": \"FV/001\" }"
+
+To NIE jest prawdziwy JSON object.
+
+Dlatego:
+
+JSON.parse(raw)
+
+zamienia STRING → OBJECT
+
+###########################################################
+# VALIDATION LAYER
+###########################################################
+
+AI:
+- halucynuje
+- zwraca null
+- zmienia format
+- psuje JSON
+
+Dlatego:
+AI zawsze potrzebuje validation.
+
+###########################################################
+# DUPLICATE DETECTION
+###########################################################
+
+duplicate_key:
+
+vendor_nip + ":" + invoice_number
+
+Przykład:
+
+3174612004:FV/020/04/2026
+
+###########################################################
+# BUSINESS KEY
+###########################################################
+
+duplicate_key
+to NIE id rekordu.
+
+To business identifier.
+
+###########################################################
+# DATABASE CONSTRAINTS
+###########################################################
+
+UNIQUE CONSTRAINT:
+
+unique(duplicate_key)
+
+Baza:
+- pilnuje integralności danych
+- jest finalnym guardem systemu
+
+###########################################################
+# PATCH vs INSERT
+###########################################################
+
+INSERT
+=
+tworzy rekord
+
+PATCH
+=
+aktualizuje rekord
+
+###########################################################
+# FLOW BUGI KTÓRE BYŁY
+###########################################################
+
+- RLS blokowało API
+- invalid JSON body
+- null rozwalał date type
+- empty outputs w n8n
+- branching zmieniał data shape
+- IF dostawał zły input
+- duplicate_key nie istniał w starych rekordach
+- Content-Type miał literówkę
+- PATCH nie trafiał w rekord
+- AI zwracało string zamiast object
+
+###########################################################
+# EMPTY OUTPUTS
+###########################################################
+
+n8n:
+jeśli node zwraca 0 items
+→ następne node się nie wykonają
+
+To bardzo ważne.
+
+###########################################################
+# BRANCHING PROBLEM
+###########################################################
+
+IF branch może zmienić structure danych.
+
+Dlatego czasem:
+
+$json
+
+jest błędny.
+
+I trzeba używać:
+
+$('Node').item.json
+
+###########################################################
+# PRODUCTION THINKING
+###########################################################
+
+Nie pytaj:
+
+"jaki node?"
+
+Pytaj:
+
+- jaki mam INPUT?
+- jaki mam OUTPUT?
+- jaki jest data shape?
+- czy następny node oczekuje tego formatu?
+
+###########################################################
+# STATUSY SYSTEMU
+###########################################################
+
+processing
+ready
+duplicate
+
+planowane:
+
+error
+needs_review
+
+###########################################################
+# CO JUŻ UMIESZ
+###########################################################
+
+- REST API
+- Supabase
+- storage
+- OCR flow
+- AI extraction
+- validation
+- duplicate detection
+- PATCH vs INSERT
+- workflow branching
+- JSON parsing
+- payload building
+- business keys
+- DB constraints
+- debugging flow danych
+
+###########################################################
+# CZEGO JESZCZE BRAKUJE
+###########################################################
+
+- error handling
+- retries
+- observability
+- review queue
+- monitoring
+- dashboard
+- queue systems
+- auth
+- async processing
+
+###########################################################
+# NAJWAŻNIEJSZA LEKCJA
+###########################################################
+
+Backend / automatyzacja / AI systems
+to głównie:
+
+- debugging
+- data flow
+- state handling
+- validation
+- architecture thinking
+
+a nie:
+- pisanie składni z pamięci
+
+###########################################################
+# REAL BACKEND MINDSET
+###########################################################
+
+Seniorzy:
+- często googlują składnię
+- zapominają framework API
+
+ALE:
+
+- rozumieją flow
+- rozumieją dane
+- rozumieją execution graph
+- wiedzą gdzie system się rozpadł
+
+To jest właściwy kierunek nauki.
+###########################################################
