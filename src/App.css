@@ -1238,120 +1238,83 @@ button:disabled {
 
 /* Small phones */
 
-@media (max-width: 430px) {
-  .nav {
-    display: none;
-  }
-
-  .topbar {
-    width: calc(100% - 20px);
-    padding: 14px;
-  }
-
-  .main {
-    padding: 14px 10px 32px;
-  }
-
-  .heroContent {
-    padding: 30px 16px;
-    border-radius: 24px;
-  }
-
-  .hero h1 {
-    font-size: 38px;
-  }
-
-  .centerPanel,
-  .detailsPanel,
-  .quickAssistant {
-    padding: 14px;
-  }
-
-  .quickActions button {
-    flex-basis: 100%;
-  }
-
-  .preview {
-    height: 360px;
-  }
-
-  .loginPage {
-    padding: 14px;
-  }
-
-  .loginCard {
-    padding: 28px 20px;
-    border-radius: 24px;
-  }
-}
-
 @media (max-width: 640px) {
+  html,
   body,
+  #root,
   .app {
+    width: 100%;
+    max-width: 100%;
     overflow-x: hidden;
   }
 
   .main {
     width: 100%;
-    padding: 14px 12px 32px;
+    max-width: 100%;
+    padding: 14px 10px 32px;
+    overflow-x: hidden;
   }
 
-  .topbar {
-    width: calc(100% - 24px);
-    margin-top: 12px;
-    padding: 14px;
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  .hero,
+  .dashboard,
+  .centerPanel,
+  .detailsPanel,
+  .quickAssistant,
+  .preview,
+  .pdfFrame {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .centerPanel,
   .detailsPanel,
   .quickAssistant,
   .heroContent {
-    width: 100%;
-    max-width: 100%;
-    padding: 16px;
-    border-radius: 18px;
+    padding: 14px;
+    box-sizing: border-box;
+  }
+
+  .dashboard {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .detailsPanel {
     position: static;
   }
 
-  .hero h1 {
-    font-size: 38px;
-    letter-spacing: -1.5px;
-  }
-
-  .heroButtons,
-  .quickActions {
-    flex-direction: column;
-  }
-
-  .heroPrimary,
-  .heroSecondary,
-  .quickActions button {
-    width: 100%;
-  }
-
   .table {
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
   }
 
   .tableHead,
   .tableRow {
-    min-width: 760px;
+    min-width: 720px;
   }
 
   .assistantInput {
-    grid-template-columns: 1fr 52px;
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: minmax(0, 1fr) 48px;
+  }
+
+  .assistantInput button {
+    width: 48px;
+  }
+
+  .quickActions {
+    width: 100%;
+  }
+
+  .quickActions button {
+    min-width: 0;
   }
 
   .preview {
-    height: 420px;
+    height: 380px;
+    overflow: hidden;
   }
 }
