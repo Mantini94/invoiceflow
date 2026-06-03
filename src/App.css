@@ -631,6 +631,7 @@ button:disabled {
   padding: 24px;
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, rgba(123, 92, 255, 0.16), rgba(255, 255, 255, 0.035));
+  text-align: center;
 }
 
 .quickAssistantTop h3 {
@@ -653,6 +654,7 @@ button:disabled {
   overflow-y: auto;
   margin: 16px 0;
   padding-right: 6px;
+  align-items: center;
 }
 
 .assistantMessage {
@@ -661,12 +663,15 @@ button:disabled {
   border-radius: 14px;
   font-size: 14px;
   line-height: 1.45;
+  text-align: center;
 }
 
 .assistantMessageAi {
   align-self: flex-start;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  align-self: center;
+  text-align: center;
 }
 
 .assistantMessageUser {
@@ -680,6 +685,8 @@ button:disabled {
   flex-wrap: wrap;
   gap: 10px;
   margin: 18px 0;
+    justify-content: center;
+
 }
 
 .quickActions button {
@@ -1278,3 +1285,73 @@ button:disabled {
   }
 }
 
+@media (max-width: 640px) {
+  body,
+  .app {
+    overflow-x: hidden;
+  }
+
+  .main {
+    width: 100%;
+    padding: 14px 12px 32px;
+  }
+
+  .topbar {
+    width: calc(100% - 24px);
+    margin-top: 12px;
+    padding: 14px;
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .centerPanel,
+  .detailsPanel,
+  .quickAssistant,
+  .heroContent {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .detailsPanel {
+    position: static;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    letter-spacing: -1.5px;
+  }
+
+  .heroButtons,
+  .quickActions {
+    flex-direction: column;
+  }
+
+  .heroPrimary,
+  .heroSecondary,
+  .quickActions button {
+    width: 100%;
+  }
+
+  .table {
+    overflow-x: auto;
+  }
+
+  .tableHead,
+  .tableRow {
+    min-width: 760px;
+  }
+
+  .assistantInput {
+    grid-template-columns: 1fr 52px;
+  }
+
+  .preview {
+    height: 420px;
+  }
+}
