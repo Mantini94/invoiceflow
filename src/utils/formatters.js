@@ -26,3 +26,18 @@ export const formatDateTime = (value) => {
     minute: "2-digit",
   });
 };
+
+
+export function formatCompactMoney(value) {
+  const amount = Number(value || 0);
+
+  if (amount >= 1000000) {
+    return `${(amount / 1000000).toFixed(2)} mln zł`;
+  }
+
+  if (amount >= 1000) {
+    return `${(amount / 1000).toFixed(1)} tys. zł`;
+  }
+
+  return `${amount.toFixed(2)} zł`;
+}

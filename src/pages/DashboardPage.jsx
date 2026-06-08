@@ -7,7 +7,12 @@ import { usePdfPreview } from "../hooks/usePdfPreview";
 import InvoiceDetails from "../invoices/InvoiceDetails";
 import InvoiceTable from "../invoices/InvoiceTable";
 import PdfModal from "../pdf/PdfModal";
-import { formatDate, formatDateTime, formatMoney } from "../utils/formatters";
+import {
+  formatDate,
+  formatDateTime,
+  formatMoney,
+  formatCompactMoney,
+} from "../utils/formatters";
 import {
   filterInvoices,
   getDisplayStatus,
@@ -36,10 +41,7 @@ export default function DashboardPage() {
     saveInvoiceStatus,
   } = useInvoices(loadInvoicePdf);
 
-  const [aiMessage, setAiMessage] = useState("");
-  const [aiResponse, setAiResponse] = useState(
-    "Mogę analizować faktury i znajdować problemy."
-  );
+
 
   useEffect(() => {
     fetchInvoices();
@@ -113,53 +115,7 @@ export default function DashboardPage() {
     await loadInvoicePdf(selectedInvoice.file_path);
   };
 
-  const runAiAction = (type) => {
-    if (type === "review") {
-      const review = invoices.filter(
-        (invoice) => invoice.needs_review === true || invoice.status === "duplicate"
-      );
 
-      setActiveFilter("Do sprawdzenia");
-      setAiResponse(`Znaleziono ${review.length} faktur wymagających uwagi.`);
-    }
-
-    if (type === "summary") {
-      const total = invoices.reduce(
-        (sum, invoice) => sum + Number(invoice.gross_amount || 0),
-        0
-      );
-
-      setAiResponse(`Łączna wartość faktur: ${formatMoney(total)}.`);
-    }
-
-    if (type === "duplicates") {
-      const duplicates = invoices.filter(
-        (invoice) => invoice.is_duplicate === true || invoice.status === "duplicate"
-      );
-
-      setActiveFilter("Duplikaty");
-      setAiResponse(`Znaleziono ${duplicates.length} duplikatów.`);
-    }
-
-    if (type === "missing") {
-      const missing = invoices.filter(
-        (invoice) =>
-          !invoice.invoice_number ||
-          !invoice.vendor_name ||
-          !invoice.vendor_nip ||
-          !invoice.gross_amount
-      );
-
-      setAiResponse(`${missing.length} faktur ma brakujące dane.`);
-    }
-
-    if (type === "toPay") {
-      const toPay = invoices.filter((invoice) => invoice.status === "to_pay");
-
-      setActiveFilter("Do zapłaty");
-      setAiResponse(`Pokazuję faktury do zapłaty: ${toPay.length}.`);
-    }
-  };
 
   if (loading) {
     return (
@@ -199,9 +155,16 @@ export default function DashboardPage() {
                 Otwórz faktury
               </button>
 
-              <button className="heroSecondary" onClick={() => runAiAction("summary")}>
-                Analiza AI
-              </button>
+            <button
+            className="heroSecondary"
+              onClick={() =>
+            document.getElementById("ai")?.scrollIntoView({
+            behavior: "smooth",
+            })
+            }
+            >
+              Analiza AI
+          </button>
             </div>
 
             <div className="alertBar">
@@ -248,15 +211,12 @@ export default function DashboardPage() {
             />
 
             <QuickAssistant
-              invoices={invoices}
-              activeFilter={activeFilter}
-              setActiveFilter={setActiveFilter}
-              aiMessage={aiMessage}
-              setAiMessage={setAiMessage}
-              aiResponse={aiResponse}
-              setAiResponse={setAiResponse}
-              formatMoney={formatMoney}
-            />
+  invoices={invoices}
+  activeFilter={activeFilter}
+  setActiveFilter={setActiveFilter}
+  formatMoney={formatMoney}
+  formatCompactMoney={formatCompactMoney}
+/>
           </section>
 
           <InvoiceDetails
