@@ -82,12 +82,16 @@ const totalValue = financialInvoices.reduce(
   const topVendors = useMemo(() => {
     const vendors = {};
 
-    financialInvoices.forEach((invoice) => {
-      const vendor = invoice.vendor_name || "Brak dostawcy";
-      const amount = Number(invoice.gross_amount || 0);
+   financialInvoices.forEach((invoice) => {
+  if (!invoice.vendor_name || !invoice.gross_amount) {
+    return;
+  }
 
-      vendors[vendor] = (vendors[vendor] || 0) + amount;
-    });
+  const vendor = invoice.vendor_name;
+  const amount = Number(invoice.gross_amount);
+
+  vendors[vendor] = (vendors[vendor] || 0) + amount;
+});
 
     return Object.entries(vendors)
       .map(([vendor, amount]) => ({ vendor, amount }))
