@@ -1434,24 +1434,6 @@ button:disabled {
   padding: 32px;
 }
 
-.executiveLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
-  gap: 24px;
-  align-items: start;
-  margin-top: 28px;
-}
-
-.executiveLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-
-
-
-
 
 .executiveCard,
 .executiveGridSmall button,
@@ -1553,17 +1535,6 @@ button:disabled {
   margin: 0;
 }
 
-@media (max-width: 1100px) {
-  .executiveLayout {
-    grid-template-columns: 1fr;
-  }
-
-  .executiveGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-
 .quickAssistant {
   max-width: 1180px;
   margin: 0 auto;
@@ -1593,28 +1564,34 @@ button:disabled {
 }
 
 .executiveLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 470px;
-  gap: 28px;
-  align-items: start;
-}
-
-.executiveLeft {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
+  width: 100%;
+}
+
+.executiveTop {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+  align-items: stretch;
 }
 
 .executiveGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
 
 .executiveGridSmall {
   display: grid;
-grid-template-columns: repeat(3, minmax(180px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.executiveGridSmall button {
+  min-height: 64px;
 }
 
 .executiveCard,

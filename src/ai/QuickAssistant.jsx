@@ -146,115 +146,112 @@ export default function QuickAssistant({
       
 
       
-    <div className="executiveLayout">
-  <div className="executiveGrid">
-    <div className="executiveCard">
-      <span>Łączna wartość faktur</span>
-      <strong>{formatCompactMoney(totalValue)}</strong>
+   <div className="executiveLayout">
+  <div className="executiveTop">
+    <div className="executiveGrid">
+      <div className="executiveCard">
+        <span>Łączna wartość faktur</span>
+        <strong>{formatCompactMoney(totalValue)}</strong>
+      </div>
+
+      <div className="executiveCard">
+        <span>Do zapłaty</span>
+        <strong>{formatCompactMoney(toPayValue)}</strong>
+      </div>
+
+      <div className="executiveCard">
+        <span>Faktury w bazie</span>
+        <strong>{invoices.length}</strong>
+      </div>
+
+      <div className="executiveCard">
+        <span>Risk score</span>
+        <strong>{riskScore}</strong>
+        <small>{getRiskLabel()}</small>
+      </div>
     </div>
 
-    <div className="executiveCard">
-      <span>Do zapłaty</span>
-      <strong>{formatCompactMoney(toPayValue)}</strong>
+    <div className="executivePanel">
+      <h4>Top dostawcy wg wartości faktur</h4>
+
+      {topVendors.length === 0 ? (
+        <p>Brak danych dostawców.</p>
+      ) : (
+        topVendors.map((vendor) => (
+          <div className="vendorRow" key={vendor.vendor}>
+            <span>{vendor.vendor}</span>
+            <strong>{formatMoney(vendor.amount)}</strong>
+          </div>
+        ))
+      )}
     </div>
-
-    <div className="executiveCard">
-      <span>Faktury w bazie</span>
-      <strong>{invoices.length}</strong>
-    </div>
-
-    <div className="executiveCard">
-      <span>Risk score</span>
-      <strong>{riskScore}</strong>
-      <small>{getRiskLabel()}</small>
-    </div>
-  </div>
-
-  <div className="executivePanel">
-    <h4>Top dostawcy wg wartości faktur</h4>
-
-    {topVendors.length === 0 ? (
-      <p>Brak danych dostawców.</p>
-    ) : (
-      topVendors.map((vendor) => (
-        <div className="vendorRow" key={vendor.vendor}>
-          <span>{vendor.vendor}</span>
-          <strong>{formatMoney(vendor.amount)}</strong>
-        </div>
-      ))
-    )}
   </div>
 
   <div className="executiveGridSmall">
-  <button
-    onClick={() => {
-      setActiveFilter("Wszystkie");
-      document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    Wszystkie: {invoices.length}
-  </button>
+    <button
+      onClick={() => {
+        setActiveFilter("Wszystkie");
+        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      Wszystkie: {invoices.length}
+    </button>
 
-  <button
-    onClick={() => {
-      setActiveFilter("Duplikaty");
-      document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    Duplikaty: {duplicates.length}
-  </button>
+    <button
+      onClick={() => {
+        setActiveFilter("Duplikaty");
+        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      Duplikaty: {duplicates.length}
+    </button>
 
-  <button
-    onClick={() => {
-      setActiveFilter("Do sprawdzenia");
-      document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    Do sprawdzenia: {reviewItems.length}
-  </button>
+    <button
+      onClick={() => {
+        setActiveFilter("Do sprawdzenia");
+        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      Do sprawdzenia: {reviewItems.length}
+    </button>
 
-  <button
-    onClick={() => {
-      setActiveFilter("Brakujące dane");
-      document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    Brakujące dane: {missingData.length}
-  </button>
+    <button
+      onClick={() => {
+        setActiveFilter("Brakujące dane");
+        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      Brakujące dane: {missingData.length}
+    </button>
 
-  <button
-    onClick={() => {
-      setActiveFilter("Do zapłaty");
-      document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    Do zapłaty: {toPay.length}
-  </button>
+    <button
+      onClick={() => {
+        setActiveFilter("Do zapłaty");
+        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      Do zapłaty: {toPay.length}
+    </button>
 
-  <button
-    onClick={() => {
-      setActiveFilter("Gotowe");
-      document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    Gotowe: {ready.length}
-  </button>
+    <button
+      onClick={() => {
+        setActiveFilter("Gotowe");
+        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      Gotowe: {ready.length}
+    </button>
 
-  <button
-    onClick={() => {
-      setActiveFilter("W trakcie");
-      document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    W trakcie: {processing.length}
-  </button>
+    <button
+      onClick={() => {
+        setActiveFilter("W trakcie");
+        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      W trakcie: {processing.length}
+    </button>
+  </div>
 </div>
-
-
-
-
-</div>
-
 
 
    
