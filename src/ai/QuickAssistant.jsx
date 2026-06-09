@@ -1,4 +1,10 @@
 import { useMemo, useState } from "react";
+import {
+  DollarSign,
+  Wallet,
+  FileText,
+  ShieldCheck,
+} from "lucide-react";
 
 const N8N_AI_WEBHOOK_URL =
   "https://n8n-mvj1.srv1505698.hstgr.cloud/webhook/invoice-ai-assistant";
@@ -149,26 +155,42 @@ export default function QuickAssistant({
    <div className="executiveLayout">
   <div className="executiveTop">
     <div className="executiveGrid">
-      <div className="executiveCard">
-        <span>Łączna wartość faktur</span>
-        <strong>{formatCompactMoney(totalValue)}</strong>
-      </div>
+     <div className="executiveCard">
+  <div className="kpiHeader">
+    <div className="kpiIcon"><DollarSign size={22} /></div>
+    <span>Łączna wartość faktur</span>
+  </div>
 
-      <div className="executiveCard">
-        <span>Do zapłaty</span>
-        <strong>{formatCompactMoney(toPayValue)}</strong>
-      </div>
+  <strong>{formatCompactMoney(totalValue)}</strong>
+</div>
 
-      <div className="executiveCard">
-        <span>Faktury w bazie</span>
-        <strong>{invoices.length}</strong>
-      </div>
+<div className="executiveCard">
+  <div className="kpiHeader">
+    <div className="kpiIcon"><Wallet size={22} /></div>
+    <span>Do zapłaty</span>
+  </div>
 
-      <div className="executiveCard">
-        <span>Risk score</span>
-        <strong>{riskScore}</strong>
-        <small>{getRiskLabel()}</small>
-      </div>
+  <strong>{formatCompactMoney(toPayValue)}</strong>
+</div>
+
+<div className="executiveCard">
+  <div className="kpiHeader">
+    <div className="kpiIcon"><FileText size={22} /></div>
+    <span>Faktury w bazie</span>
+  </div>
+
+  <strong>{invoices.length}</strong>
+</div>
+
+<div className="executiveCard">
+  <div className="kpiHeader">
+    <div className="kpiIcon"> <ShieldCheck size={22} /></div>
+    <span>Risk score</span>
+  </div>
+
+  <strong>{riskScore}</strong>
+  <small>{getRiskLabel()}</small>
+</div>
     </div>
 
     <div className="executivePanel">
@@ -187,70 +209,107 @@ export default function QuickAssistant({
     </div>
   </div>
 
-  <div className="executiveGridSmall">
-    <button
-      onClick={() => {
-        setActiveFilter("Wszystkie");
-        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      Wszystkie: {invoices.length}
-    </button>
+<div className="executiveGridSmall">
 
-    <button
-      onClick={() => {
-        setActiveFilter("Duplikaty");
-        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      Duplikaty: {duplicates.length}
-    </button>
+  <button
+    onClick={() => {
+      setActiveFilter("Wszystkie");
+      document.getElementById("invoices")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }}
+  >
+    <div className="statIcon">◉</div>
+    <div className="statNumber">{invoices.length}</div>
+    <div className="statTitle">WSZYSTKIE</div>
+    <div className="statDescription">Wszystkie faktury</div>
+  </button>
 
-    <button
-      onClick={() => {
-        setActiveFilter("Do sprawdzenia");
-        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      Do sprawdzenia: {reviewItems.length}
-    </button>
+  <button
+    onClick={() => {
+      setActiveFilter("Duplikaty");
+      document.getElementById("invoices")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }}
+  >
+    <div className="statIcon">▣</div>
+    <div className="statNumber">{duplicates.length}</div>
+    <div className="statTitle">DUPLIKATY</div>
+    <div className="statDescription">Znalezione duplikaty</div>
+  </button>
 
-    <button
-      onClick={() => {
-        setActiveFilter("Brakujące dane");
-        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      Brakujące dane: {missingData.length}
-    </button>
+  <button
+    onClick={() => {
+      setActiveFilter("Do sprawdzenia");
+      document.getElementById("invoices")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }}
+  >
+    <div className="statIcon">⌕</div>
+    <div className="statNumber">{reviewItems.length}</div>
+    <div className="statTitle">DO SPRAWDZENIA</div>
+    <div className="statDescription">Wymagają uwagi</div>
+  </button>
 
-    <button
-      onClick={() => {
-        setActiveFilter("Do zapłaty");
-        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      Do zapłaty: {toPay.length}
-    </button>
+  <button
+    onClick={() => {
+      setActiveFilter("Brakujące dane");
+      document.getElementById("invoices")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }}
+  >
+    <div className="statIcon">◫</div>
+    <div className="statNumber">{missingData.length}</div>
+    <div className="statTitle">BRAKUJĄCE DANE</div>
+    <div className="statDescription">Niekompletne dane</div>
+  </button>
 
-    <button
-      onClick={() => {
-        setActiveFilter("Gotowe");
-        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      Gotowe: {ready.length}
-    </button>
+  <button
+    onClick={() => {
+      setActiveFilter("Do zapłaty");
+      document.getElementById("invoices")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }}
+  >
+    <div className="statIcon">◈</div>
+    <div className="statNumber">{toPay.length}</div>
+    <div className="statTitle">DO ZAPŁATY</div>
+    <div className="statDescription">Oczekujące płatności</div>
+  </button>
 
-    <button
-      onClick={() => {
-        setActiveFilter("W trakcie");
-        document.getElementById("invoices")?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      W trakcie: {processing.length}
-    </button>
-  </div>
+  <button
+    onClick={() => {
+      setActiveFilter("Gotowe");
+      document.getElementById("invoices")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }}
+  >
+    <div className="statIcon">✓</div>
+    <div className="statNumber">{ready.length}</div>
+    <div className="statTitle">GOTOWE</div>
+    <div className="statDescription">Zakończone</div>
+  </button>
+
+  <button
+    onClick={() => {
+      setActiveFilter("W trakcie");
+      document.getElementById("invoices")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }}
+  >
+    <div className="statIcon">◔</div>
+    <div className="statNumber">{processing.length}</div>
+    <div className="statTitle">W TRAKCIE</div>
+    <div className="statDescription">W realizacji</div>
+  </button>
+
+</div>
 </div>
 
 
