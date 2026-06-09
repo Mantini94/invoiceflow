@@ -50,10 +50,16 @@ export default function QuickAssistant({
 
   const processing = invoices.filter((invoice) => invoice.status === "processing");
 
-  const totalValue = invoices.reduce(
-    (sum, invoice) => sum + Number(invoice.gross_amount || 0),
-    0
-  );
+  const financialInvoices = invoices.filter(
+  (invoice) =>
+    invoice.is_duplicate !== true &&
+    invoice.status !== "duplicate"
+);
+
+const totalValue = financialInvoices.reduce(
+  (sum, invoice) => sum + Number(invoice.gross_amount || 0),
+  0
+);
 
   const toPayValue = toPay.reduce(
     (sum, invoice) => sum + Number(invoice.gross_amount || 0),
@@ -67,7 +73,7 @@ export default function QuickAssistant({
   const topVendors = useMemo(() => {
     const vendors = {};
 
-    invoices.forEach((invoice) => {
+    financialInvoices.forEach((invoice) => {
       const vendor = invoice.vendor_name || "Brak dostawcy";
       const amount = Number(invoice.gross_amount || 0);
 

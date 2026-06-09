@@ -748,9 +748,9 @@ button:disabled {
 .detailsPanel {
   border: 1px solid var(--border);
   background: var(--panel);
-  width: 450px;
-  min-width: 420px;
-  max-width: 450px;
+  width: 400px;
+  min-width: 400px;
+  max-width: 400px;
   padding: 10px;
   position: sticky;
   top: 24px;
