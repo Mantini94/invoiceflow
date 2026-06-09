@@ -40,9 +40,20 @@ export const filterInvoices = (invoices, activeFilter, search) => {
     result = result.filter((invoice) => invoice.status === "processing");
   }
 
-  if (activeFilter === "Do sprawdzenia") {
-    result = result.filter((invoice) => invoice.needs_review === true);
-  }
+if (activeFilter === "Do sprawdzenia") {
+  return invoices.filter(
+    (invoice) =>
+      invoice.needs_review === true ||
+      invoice.status === "duplicate" ||
+      invoice.status === "review" ||
+      invoice.status === "error" ||
+      invoice.status === "to_pay" ||
+      !invoice.invoice_number ||
+      !invoice.vendor_name ||
+      !invoice.vendor_nip ||
+      !invoice.gross_amount
+  );
+}
 
   if (activeFilter === "Do zapłaty") {
     result = result.filter((invoice) => invoice.status === "to_pay");

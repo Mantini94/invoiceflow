@@ -40,9 +40,18 @@ export default function QuickAssistant({
       !invoice.gross_amount
   );
 
-  const reviewItems = invoices.filter(
-    (invoice) => invoice.needs_review === true || invoice.status === "duplicate"
-  );
+const reviewItems = invoices.filter(
+  (invoice) =>
+    invoice.needs_review === true ||
+    invoice.status === "duplicate" ||
+    invoice.status === "review" ||
+    invoice.status === "error" ||
+    invoice.status === "to_pay" ||
+    !invoice.invoice_number ||
+    !invoice.vendor_name ||
+    !invoice.vendor_nip ||
+    !invoice.gross_amount
+);
 
   const toPay = invoices.filter((invoice) => invoice.status === "to_pay");
 

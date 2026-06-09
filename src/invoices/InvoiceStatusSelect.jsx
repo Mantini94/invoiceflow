@@ -9,7 +9,6 @@ export default function InvoiceStatusSelect({ selectedInvoice, handleStatusChang
       <option value="duplicate">Duplikat</option>
       <option value="paid">Opłacona</option>
       <option value="to_pay">Do zapłaty</option>
-      <option value="error">Błąd</option>
     </select>
   );
 }

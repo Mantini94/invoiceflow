@@ -7,50 +7,62 @@ export default function InvoiceRow({
   getDisplayStatus,
 }) {
   const getRiskData = () => {
-    const reasons = [];
-    const amount = Number(invoice.gross_amount || 0);
+  const reasons = [];
+  const amount = Number(invoice.gross_amount || 0);
 
-    if (invoice.is_duplicate || invoice.status === "duplicate") {
-      reasons.push("Duplicate invoice");
-    }
+  const hasMissingData =
+    !invoice.vendor_nip ||
+    !invoice.invoice_number ||
+    !invoice.vendor_name ||
+    !invoice.gross_amount;
 
-    if (invoice.status === "error") {
-      reasons.push("Processing error");
-    }
+  if (invoice.is_duplicate || invoice.status === "duplicate") {
+    reasons.push("Duplicate invoice");
+  }
 
-    if (!invoice.vendor_nip) reasons.push("Missing NIP");
-    if (!invoice.invoice_number) reasons.push("Missing invoice number");
-    if (!invoice.due_date) reasons.push("Missing due date");
-    if (amount > 50000) reasons.push("Very high amount");
+  if (invoice.status === "review") {
+    reasons.push("Manual review required");
+  }
 
-    if (
-      invoice.is_duplicate ||
-      invoice.status === "duplicate" ||
-      invoice.status === "error" ||
-      amount > 50000 ||
-      (!invoice.vendor_nip && amount > 10000)
-    ) {
-      return {
-        label: "HIGH",
-        className: "riskHigh",
-        reason: reasons.join(" • "),
-      };
-    }
+  if (invoice.status === "error") {
+    reasons.push("Processing error");
+  }
 
-    if (reasons.length > 0) {
-      return {
-        label: "MEDIUM",
-        className: "riskMedium",
-        reason: reasons.join(" • "),
-      };
-    }
+  if (!invoice.vendor_nip) reasons.push("Missing NIP");
+  if (!invoice.invoice_number) reasons.push("Missing invoice number");
+  if (!invoice.vendor_name) reasons.push("Missing vendor name");
+  if (!invoice.gross_amount) reasons.push("Missing amount");
+  if (amount > 50000) reasons.push("Very high amount");
 
+  if (
+    invoice.is_duplicate ||
+    invoice.status === "duplicate" ||
+    invoice.status === "review" ||
+    invoice.status === "error" ||
+    hasMissingData ||
+    amount > 50000
+  ) {
     return {
-      label: "LOW",
-      className: "riskLow",
-      reason: "No suspicious signals",
+      label: "HIGH",
+      className: "riskHigh",
+      reason: reasons.join(" • "),
     };
+  }
+
+  if (invoice.status === "to_pay") {
+    return {
+      label: "MEDIUM",
+      className: "riskMedium",
+      reason: "Waiting for payment approval",
+    };
+  }
+
+  return {
+    label: "LOW",
+    className: "riskLow",
+    reason: "No suspicious signals",
   };
+};
 
   const risk = getRiskData();
 
