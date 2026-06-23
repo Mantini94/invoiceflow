@@ -8,33 +8,50 @@ export function useInvoices(loadInvoicePdf) {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fetchInvoices = async () => {
+const fetchInvoices = async (showLoading = true) => {
+  if (showLoading) {
     setLoading(true);
-    setErrorMessage("");
+  }
 
-    const { data, error } = await getInvoices();
+  setErrorMessage("");
 
-    if (error) {
-      console.error("Błąd Supabase:", error);
-      setErrorMessage("Nie udało się pobrać faktur z Supabase.");
+  const { data, error } = await getInvoices();
+
+  if (error) {
+    console.error("Błąd Supabase:", error);
+    setErrorMessage("Nie udało się pobrać faktur z Supabase.");
+
+    if (showLoading) {
       setLoading(false);
-      return;
     }
 
-    const rows = data || [];
+    return;
+  }
 
-    setInvoices(rows);
+  const rows = data || [];
 
-    if (rows.length > 0) {
-      setSelectedInvoice(rows[0]);
-      await loadInvoicePdf(rows[0].file_path);
-    } else {
-      setSelectedInvoice(null);
-      await loadInvoicePdf("");
-    }
+  setInvoices(rows);
 
+  if (rows.length > 0) {
+    setSelectedInvoice((currentInvoice) => {
+      if (!currentInvoice) {
+        return rows[0];
+      }
+
+      return (
+        rows.find((invoice) => invoice.id === currentInvoice.id) ||
+        rows[0]
+      );
+    });
+  } else {
+    setSelectedInvoice(null);
+    await loadInvoicePdf("");
+  }
+
+  if (showLoading) {
     setLoading(false);
-  };
+  }
+};
 
   const saveInvoiceStatus = async () => {
     if (!selectedInvoice) return;

@@ -47,7 +47,7 @@ export default function DashboardPage() {
     fetchInvoices();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
   const channel = supabase
     .channel("invoices-realtime")
     .on(
@@ -57,11 +57,14 @@ export default function DashboardPage() {
         schema: "public",
         table: "invoices",
       },
-      async () => {
-        await fetchInvoices();
+      async (payload) => {
+        console.log("Realtime event:", payload);
+        await fetchInvoices(false);
       }
     )
-    .subscribe();
+    .subscribe((status) => {
+      console.log("Realtime status:", status);
+    });
 
   return () => {
     supabase.removeChannel(channel);

@@ -93,10 +93,10 @@ const totalValue = financialInvoices.reduce(
   vendors[vendor] = (vendors[vendor] || 0) + amount;
 });
 
-    return Object.entries(vendors)
-      .map(([vendor, amount]) => ({ vendor, amount }))
-      .sort((a, b) => b.amount - a.amount)
-      .slice(0, 5);
+   return Object.entries(vendors)
+  .map(([vendor, amount]) => ({ vendor, amount }))
+  .sort((a, b) => b.amount - a.amount)
+  .slice(0, 5);
   }, [invoices]);
 
   const riskScore =
