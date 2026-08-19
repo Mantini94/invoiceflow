@@ -1,26 +1,29 @@
 export const getDisplayStatus = (status) => {
-  const labels = {
-    ready: "Gotowa",
-    duplicate: "Duplikat",
-    processing: "W trakcie",
-    error: "Błąd",
-    paid: "Opłacona",
-    to_pay: "Do zapłaty",
-  };
+const labels = {
+  new: "Nowy",
+  processing: "Przetwarzanie",
+  ready: "Gotowa",
+  duplicate: "Duplikat",
+  error: "Błąd",
+  review: "Do sprawdzenia",
+  to_pay: "Do zapłaty",
+  missing_data: "Brakujące dane",
+};
 
   return labels[status] || status || "Brak statusu";
 };
 
 export const getStatusClass = (status) => {
-  if (status === "ready" || status === "paid") return "paid";
-
-  if (status === "duplicate" || status === "error" || status === "to_pay") {
+  if (status === "ready") return "paid";
+  if (status === "duplicate" || status === "error" ||  status === "missing_data" || status === "to_pay") {
     return "pending";
   }
 
-  if (status === "processing") return "progress";
-
+  if (status === "new" || status === "processing") {
   return "progress";
+}
+
+  
 };
 
 export const filterInvoices = (invoices, activeFilter, search) => {
@@ -36,9 +39,9 @@ export const filterInvoices = (invoices, activeFilter, search) => {
     );
   }
 
-  if (activeFilter === "W trakcie") {
-    result = result.filter((invoice) => invoice.status === "processing");
-  }
+if (activeFilter === "Nowe") {
+  result = result.filter((invoice) => invoice.status === "new");
+}
 
 if (activeFilter === "Do sprawdzenia") {
   return invoices.filter(
@@ -59,9 +62,10 @@ if (activeFilter === "Do sprawdzenia") {
     result = result.filter((invoice) => invoice.status === "to_pay");
   }
 
-  if (activeFilter === "Brakujące dane") {
+if (activeFilter === "Brakujące dane") {
   result = result.filter(
     (invoice) =>
+      invoice.status === "missing_data" ||
       !invoice.invoice_number ||
       !invoice.vendor_name ||
       !invoice.vendor_nip ||

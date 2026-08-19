@@ -1,13 +1,23 @@
-export default function InvoiceStatusSelect({ selectedInvoice, handleStatusChange }) {
+export default function InvoiceStatusSelect({
+  selectedInvoice,
+  handleStatusChange,
+}) {
   return (
     <select
       value={selectedInvoice.status || ""}
-      onChange={(event) => handleStatusChange(event.target.value)}
+      onChange={(event) =>
+        handleStatusChange(event.target.value)
+      }
     >
-      <option value="processing">W trakcie</option>
+      <option value="new">Nowy</option>
+
+      <option value="processing" disabled>
+        Przetwarzanie
+      </option>
+
       <option value="ready">Gotowa</option>
       <option value="duplicate">Duplikat</option>
-      <option value="paid">Opłacona</option>
+      <option value="missing_data">Brakujące dane</option>
       <option value="to_pay">Do zapłaty</option>
     </select>
   );

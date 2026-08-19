@@ -1,159 +1,64 @@
 # InvoiceFlow
 
-Modern AI-powered invoice management system built with React, Supabase and n8n.
-
-InvoiceFlow automatically processes invoice PDFs from Gmail, extracts structured data using AI, stores documents in Supabase and provides a modern dashboard for invoice management and analysis.
-
----
+AI-assisted invoice processing system built with React, Supabase and n8n. It collects invoice attachments from Gmail, converts supported files to PDF, extracts and validates their data, detects duplicates and exposes the results in a real-time management dashboard.
 
 ## Features
 
-* AI invoice data extraction
-* Gmail PDF automation
-* Supabase database integration
-* PDF invoice preview
-* Duplicate invoice detection
-* Invoice risk analysis
-* AI assistant chat
-* Real-time dashboard updates
-* Invoice filtering & search
-* Missing data detection
-* Responsive modern UI
-* Automated workflow with n8n
-
----
-
-## Tech Stack
-
-### Frontend
-
-* React
-* Vite
-* JavaScript
-* Custom CSS
-
-### Backend & Infrastructure
-
-* Supabase
-* Supabase Realtime
-* Supabase Storage
-* PostgreSQL
-
-### Automation & AI
-
-* n8n
-* OpenAI API
-* Gmail Trigger
-* PDF processing workflow
-
----
+- automated Gmail attachment intake and conversion to PDF
+- AI-powered invoice data extraction and validation
+- duplicate and missing-data detection
+- Supabase authentication, database, Storage and Realtime
+- secure PDF preview through signed URLs
+- search, filters, status management and financial KPIs
+- rule-based invoice risk indicators
 
 ## Architecture
 
-```txt
-Gmail PDF
-   ↓
-n8n Workflow
-   ↓
-AI Extraction
-   ↓
-Validation & Duplicate Detection
-   ↓
-Supabase Database
-   ↓
-React Dashboard
+```mermaid
+flowchart TD
+    A["Gmail + invoice attachment"] --> B["n8n automation"]
+    B --> C["File validation + PDF conversion"]
+    C --> D["Text + AI extraction"]
+    D --> E["Validation + duplicate check"]
+    E --> F["Supabase Storage + PostgreSQL"]
+    F --> G["React dashboard"]
+    G --> H["Review + status update"]
 ```
 
----
+The n8n workflow processes unread messages with attachments, verifies the file format, converts supported documents to PDF, extracts structured invoice data, validates required fields, checks for duplicates, creates or updates the Supabase record and marks the email as read.
 
-## Main Workflow
+![InvoiceFlow n8n workflow](docs/n8n-workflow.png)
 
-1. Gmail Trigger detects invoice PDF
-2. PDF is uploaded to Supabase Storage
-3. AI extracts invoice data
-4. System validates extracted content
-5. Duplicate detection is performed
-6. Invoice is stored in database
-7. Dashboard updates in real time
+## Tech stack
 
----
+| Layer | Technologies |
+| --- | --- |
+| Frontend | React 19, Vite, JavaScript, Framer Motion |
+| Backend | Supabase Auth, PostgreSQL, Realtime, Storage |
+| Automation | n8n, Gmail, file-to-PDF conversion, PDF text extraction |
+| AI | OpenAI structured invoice extraction |
 
-## Dashboard Features
+## Local setup
 
-* Invoice table
-* PDF preview workspace
-* AI assistant
-* Risk badges
-* Duplicate indicators
-* Search & filtering
-* Status management
-
----
-
-## AI Features
-
-The AI system can:
-
-* extract invoice data
-* validate invoice structure
-* detect duplicates
-* identify missing fields
-* analyze suspicious invoices
-* answer invoice-related questions
-
----
-
-## Project Goals
-
-This project was built as a practical portfolio SaaS application focused on:
-
-* frontend development
-* backend workflows
-* AI integrations
-* automation systems
-* real-world UI/UX patterns
-
----
-
-## Local Setup
+Requirements: Node.js `20.19+` or `22.12+`, npm, a configured Supabase project and access to the n8n workflow.
 
 ```bash
 git clone https://github.com/Mantini94/invoiceflow.git
-
 cd invoiceflow
-
 npm install
-
 npm run dev
 ```
 
----
+## Demo access
 
-## Environment Variables
-
-Example:
-
-```env
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-OPENAI_API_KEY=
+```text
+Email:    test123@wububu.com
+Password: elo123
 ```
 
----
+This account is intended only for testing the application.
 
-## Status
-
-Project currently under active development.
-
-Planned improvements:
-
-* better mobile layout
-* advanced AI invoice analysis
-* activity feed
-* improved PDF workspace
-* notification system
-
----
+The application expects an `invoices` table, an `invoice-files` Storage bucket and Supabase Auth users. Supabase client configuration is currently defined in `src/lib/supabase.js`; n8n credentials and workflow configuration are managed separately in n8n.
 
 ## Author
 

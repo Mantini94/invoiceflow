@@ -22,7 +22,7 @@ export default function QuickAssistant({
     "Wszystkie",
     "Gotowe",
     "Duplikaty",
-    "W trakcie",
+    "Nowy",
     "Do sprawdzenia",
     "Do zapłaty",
     "Brakujące dane",
@@ -32,19 +32,21 @@ export default function QuickAssistant({
     (invoice) => invoice.is_duplicate === true || invoice.status === "duplicate"
   );
 
-  const missingData = invoices.filter(
-    (invoice) =>
-      !invoice.invoice_number ||
-      !invoice.vendor_name ||
-      !invoice.vendor_nip ||
-      !invoice.gross_amount
-  );
+const missingData = invoices.filter(
+  (invoice) =>
+    invoice.status === "missing_data" ||
+    !invoice.invoice_number ||
+    !invoice.vendor_name ||
+    !invoice.vendor_nip ||
+    !invoice.gross_amount
+);
 
 const reviewItems = invoices.filter(
   (invoice) =>
     invoice.needs_review === true ||
     invoice.status === "duplicate" ||
     invoice.status === "review" ||
+    invoice.status === "missing_data" ||
     invoice.status === "error" ||
     invoice.status === "to_pay" ||
     !invoice.invoice_number ||
@@ -57,7 +59,9 @@ const reviewItems = invoices.filter(
 
   const ready = invoices.filter((invoice) => invoice.status === "ready");
 
-  const processing = invoices.filter((invoice) => invoice.status === "processing");
+  const newInvoices = invoices.filter(
+  (invoice) => invoice.status === "new"
+);
 
   const financialInvoices = invoices.filter(
   (invoice) =>
@@ -314,19 +318,26 @@ const totalValue = financialInvoices.reduce(
     <div className="statDescription">Zakończone</div>
   </button>
 
-  <button
-    onClick={() => {
-      setActiveFilter("W trakcie");
-      document.getElementById("invoices")?.scrollIntoView({
+<button
+  onClick={() => {
+    setActiveFilter("Nowe");
+
+    document
+      .getElementById("invoices")
+      ?.scrollIntoView({
         behavior: "smooth",
       });
-    }}
-  >
-    <div className="statIcon">◔</div>
-    <div className="statNumber">{processing.length}</div>
-    <div className="statTitle">W TRAKCIE</div>
-    <div className="statDescription">W realizacji</div>
-  </button>
+  }}
+>
+  <div className="statIcon">◔</div>
+  <div className="statNumber">
+    {newInvoices.length}
+  </div>
+  <div className="statTitle">NOWE</div>
+  <div className="statDescription">
+    Nowe poprawne faktury
+  </div>
+</button>
 
 </div>
 </div>
